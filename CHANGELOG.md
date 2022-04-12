@@ -1,4 +1,4 @@
-# Revision history for compiel-r
+# Revision history for nepali-but-code
 
 ## 0.1.0.0 -- YYYY-mm-dd
 

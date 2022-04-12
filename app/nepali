@@ -1,0 +1,11 @@
+-- Simple loop
+
+
+mukhya{
+	i huncha 0 |
+
+	jaba (i joda 1) gardai (i huncha 200) 
+	taba
+		lekha i
+	bhayo |
+}

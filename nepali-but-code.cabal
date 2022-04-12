@@ -1,10 +1,10 @@
 cabal-version:      2.4
-name:               kompiel-r
+name:               nepali-but-code
 version:            0.1.0.0
-synopsis:           A compiler for a language yet to be written
+synopsis:           A compiler for a programming language very similar to Nepali
 
 -- A longer description of the package.
--- description:
+description: This is a a prototype language (and will perhaps never be industrial strength) that I am currently building to make it easier for young Nepalese students to learn programming principles, especially targeting students who find English difficult.
 homepage:
 
 -- A URL where users can report bugs.
@@ -19,7 +19,7 @@ maintainer:         timsinaatharva@gmail.com
 category:           Development
 extra-source-files: CHANGELOG.md
 
-executable compiel-r
+executable kompiel-r
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
@@ -27,6 +27,6 @@ executable compiel-r
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
-    build-depends:    base ^>=4.14.1.0
+    build-depends:    base ^>=4.14.1.0, parsec-numbers, parsec
     hs-source-dirs:   app
     default-language: Haskell2010
