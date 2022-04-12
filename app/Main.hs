@@ -10,7 +10,6 @@ type Code = [Statement]
 main :: IO ()
 main = do
     fileContents <- readFile "nepali"
-    print fileContents
     let code = parse codeParser "nepali" fileContents
     print code
 
