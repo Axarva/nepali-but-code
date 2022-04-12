@@ -14,6 +14,6 @@ This language is a project I started keeping in mind 2 facts:
 
 I'm not sure how long it will take to get this project to a usable state.
 
-An example of a simple while loop in "Nepali" can be found in the app/nepali file of this repository.
+An example of a simple for loop in "Nepali" can be found in the app/nepali file of this repository.
 
 Any contributors are always welcome.
