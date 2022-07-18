@@ -1,10 +1,10 @@
 cabal-version:      2.4
-name:               nepali-but-code
+name:               momos
 version:            0.1.0.0
-synopsis:           A compiler for a programming language very similar to Nepali
+synopsis:           A compiler for a programming language very similar to Nepali (Inspired by Haskell)
 
 -- A longer description of the package.
-description: This is a a prototype language (and will perhaps never be industrial strength) that I am currently building to make it easier for young Nepalese students to learn programming principles, especially targeting students who find English difficult.
+description: This is a a prototype language (and will perhaps never be industrial strength) that I am currently building to make it easier for young Nepalese students to learn functional programming principles, especially targeting students who find English difficult.
 homepage:
 
 -- A URL where users can report bugs.
