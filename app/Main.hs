@@ -1,4 +1,5 @@
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE FlexibleInstances #-}
 module Main where
 
 type Ident = String
@@ -27,7 +28,11 @@ data Defn = Val Ident Expr | Rec Ident Expr deriving (Show, Eq)
 
 type Env = [(Ident, Value)]
 
-newtype Id a = Id a
+
+instance MonadFail (Either String) where
+  fail = Left
+
+newtype Id a = Id a deriving (Show, Eq)
 
 instance Functor Id where
   fmap f (Id x) = Id (f x)
@@ -39,7 +44,7 @@ instance Applicative Id where
 instance Monad Id where
   (>>=) = \(Id x) f -> f x
 
-type M = Id
+type M a = Either String a
 
 eval :: Env -> Expr -> M Value
 
@@ -50,28 +55,28 @@ eval env (Number  i   ) = return $ NumVal i
 eval env (Boolean bool) = return $ BoolVal bool
 
 -- Addition
-eval env (Plus e1 e2) = do
-  ~(NumVal n1) <- eval env e1
-  ~(NumVal n2) <- eval env e2
+eval env (Plus e1 e2  ) = do
+  (NumVal n1) <- eval env e1
+  (NumVal n2) <- eval env e2
   return $ NumVal (n1 + n2)
 
 -- Substraction.
 eval env (Minus e1 e2) = do
-  ~(NumVal n1) <- eval env e1
-  ~(NumVal n2) <- eval env e2
+  (NumVal n1) <- eval env e1
+  (NumVal n2) <- eval env e2
   return $ NumVal (n1 - n2)
 
 -- Multiplication.
 eval env (Mult e1 e2) = do
-  ~(NumVal n1) <- eval env e1
-  ~(NumVal n2) <- eval env e2
+  (NumVal n1) <- eval env e1
+  (NumVal n2) <- eval env e2
   return $ NumVal (n1 * n2)
 
 -- If statements.
 eval env (If pred tru fal) = eval env pred >>= \case
-  ~(BoolVal True ) -> eval env tru
-  ~(BoolVal False) -> eval env fal
-  _               -> error "Expected a boolean value."
+  (BoolVal True ) -> eval env tru
+  (BoolVal False) -> eval env fal
+  _               -> Left "Expected a boolean value."
 
 
 -- Comparision
@@ -81,29 +86,28 @@ eval env (Equals e1 e2) = BoolVal <$> ((==) <$> eval env e1 <*> eval env e2)
 eval env (Var i       ) = return $ find env i
 
 -- Let statements
-eval env (Let   d   e1) = elab env d >>= \environment -> eval environment e1 
+eval env (Let   d   e1) = elab env d >>= \environment -> eval environment e1
 
 -- Lambdas / Functions.
 eval env (Lam   ids e ) = return $ Closure ids e env
 
 -- Function application
 eval env (Apply f   xs) = do
-   f' <- eval env f
-   xs' <- mapM (eval env) xs
-   apply f' xs'
-
+  f'  <- eval env f
+  xs' <- mapM (eval env) xs
+  apply f' xs'
 find env i = snd $ head $ filter (\(i', _) -> i == i') env
 
 elab :: Env -> Defn -> M Env
-elab env (Val i e           ) = eval env e >>= \e' -> return $ (i, e'):env
-elab env (Rec i l@(Lam _ _)) = env'
-  where env' = (env' >>= \environment -> eval environment l) >>= \e' -> return $ (i, e'): env
-elab _ _ = error "Only lambdas can be recursive."
+elab env (Val i e            ) = eval env e >>= \e' -> return $ (i, e') : env
+elab env (Rec i l@(Lam ids e)) = return env'
+  where env' = (i, Closure ids e env') : env
+elab _ _ = Left "Only lambdas can be recursive."
 
 
 
 apply :: Value -> [Value] -> M Value
 apply (Closure ids e env) vals = eval (zip ids vals ++ env) e
-apply _                   _    = error "Your Mom."
+apply _                   _    = Left "Using a value as if it were a function."
 
 main = putStrLn "This is an interpreter apparently, idk."

@@ -19,7 +19,7 @@ maintainer:         timsinaatharva@gmail.com
 category:           Development
 extra-source-files: CHANGELOG.md
 
-executable kompiel-r
+executable momos
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
@@ -27,6 +27,6 @@ executable kompiel-r
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
-    build-depends:    base ^>=4.14.1.0, parsec-numbers, parsec
+    build-depends:    base ^>=4.14.1.0, parsec-numbers, parsec, mtl, containers
     hs-source-dirs:   app
     default-language: Haskell2010
